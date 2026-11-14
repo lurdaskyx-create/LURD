@@ -11,7 +11,7 @@ const channel = Object.freeze({
 });
 
 export default Object.freeze({
-  name: String(process.env.BOT_NAME || "ﮩ٨ـﮩﮩ٨ـL U R D'乂'𓃶").trim() || "ﮩ٨ـﮩﮩ٨ـL U R D'乂'𓃶",
+  name: String(process.env.BOT_NAME || "LURD_X").trim() || "LURD_X",
   version: String(process.env.BOT_VERSION || "1.0.0").trim() || "1.0.0",
   prefix,
   ownerName: String(process.env.OWNER_NAME || "LURDASKY").trim() || "LURDASKY",
