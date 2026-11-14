@@ -10,22 +10,30 @@ function formatDuration(seconds) {
   const minutes = Math.floor(remaining / 60);
   const secs = remaining % 60;
   const parts = [];
+
   if (days) parts.push(days + "d");
   if (hours) parts.push(hours + "h");
   if (minutes) parts.push(minutes + "m");
   if (secs || !parts.length) parts.push(secs + "s");
+
   return parts.join(" ");
 }
 
 function messageTimestampMs(message) {
   const raw = message && message.messageTimestamp;
-  const value = raw && typeof raw.toNumber === "function" ? raw.toNumber() : Number(raw);
+  const value = raw && typeof raw.toNumber === "function"
+    ? raw.toNumber()
+    : Number(raw);
+
   if (!Number.isFinite(value) || value <= 0) return null;
   return value > 1000000000000 ? value : value * 1000;
 }
 
 function ownerNumber(config) {
-  const owners = Array.isArray(config.ownerNumbers) ? config.ownerNumbers : [];
+  const owners = Array.isArray(config.ownerNumbers)
+    ? config.ownerNumbers
+    : [];
+
   return String(owners[0] || "").replace(/\D/g, "");
 }
 
@@ -47,9 +55,9 @@ const commands = [
           await ctx.send({
             image: { url: ctx.config.imageUrl },
             caption:
-              "🤖 *𝗙𝗘𝗜 𝗫𝗠𝗗 𝗕𝗢𝗧*\n" +
-              "◈ Official pairing portal: " + ctx.config.botUrl + "\n" +
-              "⚡ 𝗣𝗢𝗪𝗘𝗥𝗘𝗗 𝗕𝗬 𝗕𝗘𝗡𝗙𝗘𝗜 𝗧𝗘𝗖𝗛"
+              "🤖 LURD XMD\n" +
+              "◇ Official pairing portal: " + ctx.config.botUrl + "\n" +
+              "⚡ Powered by Benfei Tech"
           });
         } catch (error) {
           console.warn(
@@ -73,14 +81,14 @@ const commands = [
         .slice()
         .sort((a, b) => a.name.localeCompare(b.name))
         .map(command =>
-          "◈ " + ctx.config.prefix + command.name +
+          "├─ " + ctx.config.prefix + command.name +
           (command.description ? " — " + command.description : "")
         );
 
       const header =
-        "╭━━【 📚 𝗙𝗘𝗜 𝗫𝗠𝗗 𝗛𝗘𝗟𝗣 】━━┈➤\n" +
-        "┃ ◈ 𝗥𝗘𝗚𝗜𝗦𝗧𝗘𝗥𝗘𝗗 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦: " + rows.length +
-        "\n┃\n";
+        "┌──「 📚 LURD XMD HELP 」\n" +
+        "│ ◇ Registered commands: " + rows.length +
+        "\n│\n";
 
       const chunks = [];
       let current = header;
@@ -88,12 +96,15 @@ const commands = [
       for (const row of rows) {
         if (current.length + row.length + 1 > 3300) {
           chunks.push(current.trimEnd());
-          current = "╭━━【 📚 𝗙𝗘𝗜 𝗫𝗠𝗗 𝗛𝗘𝗟𝗣 — 𝗖𝗢𝗡𝗧𝗜𝗡𝗨𝗘𝗗 】━━┈➤\n┃\n";
+          current = "┌──「 HELP - CONTINUED 」\n│\n";
         }
+
         current += row + "\n";
       }
 
-      if (current.trim()) chunks.push(current.trimEnd());
+      if (current.trim()) {
+        chunks.push(current.trimEnd());
+      }
 
       for (const chunk of chunks) {
         await ctx.reply(chunk);
@@ -112,12 +123,12 @@ const commands = [
         : Math.max(0, Date.now() - timestamp);
 
       await ctx.reply([
-        "╭━━【 🏓 𝗙𝗘𝗜 𝗫𝗠𝗗 · 𝗣𝗢𝗡𝗚 】━━┈➤",
-        "┃ ◈ 𝗦𝗧𝗔𝗧𝗨𝗦: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
-        "┃ ◈ 𝗥𝗘𝗦𝗣𝗢𝗡𝗦𝗘: " + (responseMs === null ? "Unavailable" : responseMs + " ms"),
-        "┃ ◈ 𝗨𝗣𝗧𝗜𝗠𝗘: " + formatDuration(process.uptime()),
-        "┃ ◈ 𝗩𝗘𝗥𝗦𝗜𝗢𝗡: " + ctx.config.version,
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
+        "┌──「 🏓 PING 」",
+        "│ ◇ Status: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
+        "│ ◇ Response: " + (responseMs === null ? "Unavailable" : responseMs + " ms"),
+        "│ ◇ Uptime: " + formatDuration(process.uptime()),
+        "│ ◇ Version: " + ctx.config.version,
+        "└────────────────"
       ].join("\n"));
     }
   },
@@ -129,14 +140,14 @@ const commands = [
     description: "Show bot status, mode and uptime.",
     run: async ctx => {
       await ctx.reply([
-        "╭━━【 🤖 𝗕𝗢𝗧 𝗦𝗧𝗔𝗧𝗨𝗦 】━━┈➤",
-        "┃ ◈ 𝗡𝗔𝗠𝗘: " + ctx.config.name,
-        "┃ ◈ 𝗦𝗧𝗔𝗧𝗨𝗦: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
-        "┃ ◈ 𝗠𝗢𝗗𝗘: " + String(ctx.mode || "public").toUpperCase(),
-        "┃ ◈ 𝗨𝗣𝗧𝗜𝗠𝗘: " + formatDuration(process.uptime()),
-        "┃ ◈ 𝗢𝗪𝗡𝗘𝗥: " + ctx.config.ownerName,
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤",
-        "⚡ 𝗣𝗢𝗪𝗘𝗥𝗘𝗗 𝗕𝗬 𝗕𝗘𝗡𝗙𝗘𝗜 𝗧𝗘𝗖𝗛"
+        "┌──「 🤖 BOT STATUS 」",
+        "│ ◇ Name: " + ctx.config.name,
+        "│ ◇ Status: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
+        "│ ◇ Mode: " + String(ctx.mode || "public").toUpperCase(),
+        "│ ◇ Uptime: " + formatDuration(process.uptime()),
+        "│ ◇ Owner: " + ctx.config.ownerName,
+        "└────────────────",
+        "⚡ Powered by Benfei Tech"
       ].join("\n"));
     }
   },
@@ -149,10 +160,10 @@ const commands = [
       const number = ownerNumber(ctx.config);
 
       await ctx.reply([
-        "╭━━【 👑 𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥 】━━┈➤",
-        "┃ ◈ 𝗡𝗔𝗠𝗘: " + ctx.config.ownerName,
-        ...(number ? ["┃ ◈ 𝗡𝗨𝗠𝗕𝗘𝗥: +" + number] : []),
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
+        "┌──「 👑 BOT OWNER 」",
+        "│ ◇ Name: " + ctx.config.ownerName,
+        ...(number ? ["│ ◇ Number: +" + number] : []),
+        "└────────────────"
       ].join("\n"));
     }
   },
@@ -163,14 +174,14 @@ const commands = [
     description: "Show support guidance for FEI XMD.",
     run: async ctx => {
       await ctx.reply([
-        "╭━━【 🛟 𝗙𝗘𝗜 𝗫𝗠𝗗 𝗦𝗨𝗣𝗣𝗢𝗥𝗧 】━━┈➤",
-        "┃ ◈ 𝗕𝗢𝗧: " + ctx.config.name,
-        "┃ ◈ 𝗛𝗘𝗟𝗣: Setup assistance and bug reports",
-        "┃ ◈ 𝗖𝗢𝗡𝗧𝗔𝗖𝗧: " + ctx.config.ownerName,
-        "┃",
-        "┃ ◈ 𝗚𝗜𝗧𝗛𝗨𝗕:",
-        "┃ https://github.com/Benfeitech/FEI-XMD",
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
+        "┌──「 SUPPORT 」",
+        "│ ◇ Bot: " + ctx.config.name,
+        "│ ◇ Help: Setup assistance and bug reports",
+        "│ ◇ Contact: " + ctx.config.ownerName,
+        "│",
+        "│ ◇ GitHub:",
+        "│ https://github.com/Benfeitech/FEI-XMD",
+        "└────────────────"
       ].join("\n"));
     }
   },
@@ -188,11 +199,11 @@ const commands = [
         hour12: true
       }).format(new Date());
 
-      await ctx.reply(
-        "╭━━【 🕒 𝗡𝗜𝗚𝗘𝗥𝗜𝗔 𝗧𝗜𝗠𝗘 】━━┈➤\n" +
-        "┃ ◈ " + value + "\n" +
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
-      );
+      await ctx.reply([
+        "┌──「 🕒 NIGERIA TIME 」",
+        "│ ◇ " + value,
+        "└────────────────"
+      ].join("\n"));
     }
   },
 
@@ -209,11 +220,11 @@ const commands = [
         year: "numeric"
       }).format(new Date());
 
-      await ctx.reply(
-        "╭━━【 📅 𝗡𝗜𝗚𝗘𝗥𝗜𝗔 𝗗𝗔𝗧𝗘 】━━┈➤\n" +
-        "┃ ◈ " + value + "\n" +
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
-      );
+      await ctx.reply([
+        "┌──「 📅 NIGERIA DATE 」",
+        "│ ◇ " + value,
+        "└────────────────"
+      ].join("\n"));
     }
   },
 
@@ -223,13 +234,13 @@ const commands = [
     description: "Show FEI XMD version and connection status.",
     run: async ctx => {
       await ctx.reply([
-        "╭━━【 🤖 𝗙𝗘𝗜 𝗫𝗠𝗗 𝗩𝗘𝗥𝗦𝗜𝗢𝗡 】━━┈➤",
-        "┃ ◈ 𝗕𝗢𝗧: " + ctx.config.name,
-        "┃ ◈ 𝗩𝗘𝗥𝗦𝗜𝗢𝗡: " + ctx.config.version,
-        "┃ ◈ 𝗦𝗧𝗔𝗧𝗨𝗦: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
-        "┃ ◈ 𝗠𝗢𝗗𝗘: " + String(ctx.mode || "public").toUpperCase(),
-        "┃ ◈ 𝗕𝗔𝗜𝗟𝗘𝗬𝗦: Official WhiskeySockets npm package",
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
+        "┌──「 🤖 BOT VERSION 」",
+        "│ ◇ Bot: " + ctx.config.name,
+        "│ ◇ Version: " + ctx.config.version,
+        "│ ◇ Status: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
+        "│ ◇ Mode: " + String(ctx.mode || "public").toUpperCase(),
+        "│ ◇ Baileys: Official WhiskeySockets npm package",
+        "└────────────────"
       ].join("\n"));
     }
   },
@@ -241,10 +252,10 @@ const commands = [
     description: "Show the current chat and message sender IDs.",
     run: async ctx => {
       await ctx.reply([
-        "╭━━【 💬 𝗖𝗛𝗔𝗧 𝗜𝗡𝗙𝗢 】━━┈➤",
-        "┃ ◈ 𝗖𝗛𝗔𝗧 𝗜𝗗: " + ctx.jid,
-        "┃ ◈ 𝗦𝗘𝗡𝗗𝗘𝗥 𝗜𝗗: " + (ctx.senderJid || "Unavailable"),
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
+        "┌──「 💬 CHAT INFO 」",
+        "│ ◇ Chat ID: " + ctx.jid,
+        "│ ◇ Sender ID: " + (ctx.senderJid || "Unavailable"),
+        "└────────────────"
       ].join("\n"));
     }
   },
@@ -255,15 +266,15 @@ const commands = [
     description: "Show your WhatsApp sender information.",
     run: async ctx => {
       await ctx.reply([
-        "╭━━【 👤 𝗨𝗦𝗘𝗥 𝗜𝗡𝗙𝗢 】━━┈➤",
-        "┃ ◈ 𝗡𝗔𝗠𝗘: " + (ctx.msg?.pushName || "Unknown"),
-        "┃ ◈ 𝗬𝗢𝗨𝗥 𝗜𝗗: " + (ctx.senderJid || "Unavailable"),
-        "┃ ◈ 𝗢𝗪𝗡𝗘𝗥: " + (ctx.owner ? "Yes 👑" : "No"),
-        "╰━━━━━━━━━━━━━━━━━━━━┈➤"
+        "┌──「 👤 USER INFO 」",
+        "│ ◇ Name: " + (ctx.msg?.pushName || "Unknown"),
+        "│ ◇ Your ID: " + (ctx.senderJid || "Unavailable"),
+        "│ ◇ Owner: " + (ctx.owner ? "Yes 👑" : "No"),
+        "└────────────────"
       ].join("\n"));
     }
   }
 ];
 
 export default commands;
-                           
+        
