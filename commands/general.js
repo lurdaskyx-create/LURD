@@ -57,7 +57,7 @@ const commands = [
             caption:
               "🤖 LURD XMD\n" +
               "◇ Official pairing portal: " + ctx.config.botUrl + "\n" +
-              "⚡ Powered by Benfei Tech"
+              "LURDASKY"
           });
         } catch (error) {
           console.warn(
@@ -147,7 +147,7 @@ const commands = [
         "│ ◇ Uptime: " + formatDuration(process.uptime()),
         "│ ◇ Owner: " + ctx.config.ownerName,
         "└────────────────",
-        "⚡ Powered by Benfei Tech"
+        "LURDASKY"
       ].join("\n"));
     }
   },
@@ -179,8 +179,7 @@ const commands = [
         "│ ◇ Help: Setup assistance and bug reports",
         "│ ◇ Contact: " + ctx.config.ownerName,
         "│",
-        "│ ◇ GitHub:",
-        "│ https://github.com/Benfeitech/FEI-XMD",
+        "│ ◇ GitHub:
         "└────────────────"
       ].join("\n"));
     }
@@ -235,7 +234,7 @@ const commands = [
     run: async ctx => {
       await ctx.reply([
         "┌──「 🤖 BOT VERSION 」",
-        "│ ◇ Bot: " + ctx.config.name,
+        "│ ◇ Bot: " + ctx.config.Lurd,
         "│ ◇ Version: " + ctx.config.version,
         "│ ◇ Status: " + (ctx.connectionOpen ? "Online 🟢" : "Connecting 🟡"),
         "│ ◇ Mode: " + String(ctx.mode || "public").toUpperCase(),
